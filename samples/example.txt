@@ -1,0 +1,27 @@
+Salut la team,
+
+Bon je vous fais un retour rapide sur le projet. Il est 3h du mat et je suis encore dessus, la deadline c'est demain mdr.
+
+J'ai push la dernière version sur le repo, vous pouvez pull. Si y'a des questions envoyez moi un mail à music.music77@gmail.com ou sur Discord. Mon numéro au cas où: 06 78 45 12 90, mais essayez Discord d'abord.
+
+Le serveur de test tourne sur 192.168.1.42 port 8080 si vous voulez tester l'API. Le serveur de prod est sur 51.158.97.203, mais touchez pas svp. L'IP publique de mon routeur c'est 89.156.42.103 si besoin de whitelist.
+
+Le RER A à Versailles était en panne ce matin du coup je suis arrivé en retard au labo. J'aurais du bosser depuis le café place de la Bastille comme d'hab. Bref, je suis sur Paris 75013 pour encore 2 semaines avant de rentrer à Lyon.
+
+Au niveau config, le fichier est dans C:\Users\music\projet\config.yml et les logs dans /home/music/app/logs/. Ma config vim est dans ~/.config/nvim si quelqu'un veut la même. Le fichier .env contient les variables, et les clés SSH sont dans id_rsa comme d'hab.
+
+Pour les paiements de l'hébergement, mon IBAN c'est FR7630006000011234567890189. Et si quelqu'un veut me rembourser les pizzas, ma carte c'est 4970 1234 5678 9012.
+
+Les clés API:
+- Stripe: sk_live_51HG3jKLmnOPqRsTuVwXyZ0123456789
+- GitHub: ghp_AbCdEfGhIjKlMnOpQrStUvWxYz0123456789ab
+- AWS: AKIAIOSFODNN7EXAMPLE
+- Le token du bot: api_key=xK9mP2nQ5vR8wT1yU4zA7cF0
+
+Faut que je check le dashboard Grafana at 9:00 AM demain pour voir les metrics. Le standup est à 10h du mat comme d'hab.
+
+Ah et j'ai trouvé le fichier passwd sur le serveur qui était accessible en lecture pour tout le monde, c'est corrigé.
+
+Bref voilà, bonne nuit depuis Montpellier, je vais enfin dormir. On se voit avenue de la République lundi.
+
+-- music
