@@ -21,7 +21,7 @@ L'outil scanne un fichier texte (ou un pipe stdin) et détecte :
 ## Installation
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/AslakOffi/opsec-lint
 cd opsec-lint
 pip install -e .
 ```
