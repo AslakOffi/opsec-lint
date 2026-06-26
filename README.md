@@ -4,6 +4,8 @@ Scan your text for personal info leaks before you post it online.
 
 opsec-lint is a CLI tool that catches the stuff you forget to remove — IP addresses, API keys, real locations, email addresses, phone numbers, system paths, and more. Run it on a draft message and it tells you exactly what to clean up.
 
+> **Note:** This tool was originally built for French-speaking users. Some checks (phone numbers, postal codes, geolocation, street names) are primarily tailored to French formats and locations.
+
 ## Example
 
 Say you're about to post this on a forum:
