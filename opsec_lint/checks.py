@@ -56,6 +56,7 @@ def check_timezones(line):
         r'\bà\s+\d{1,2}h\d{0,2}\b',
         r'\bat\s+\d{1,2}(?::\d{2})?\s*(?:am|pm)\b',
         r'\b\d{1,2}:\d{2}\s*(?:am|pm)\b',
+        r'\b\d{1,2}\s*(?:am|pm)\b',
     ]
     # les abreviations timezone en majuscules seulement (sinon "est" en francais matche EST)
     patterns_cs = [
