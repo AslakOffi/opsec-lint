@@ -1,76 +1,82 @@
 # opsec-lint
 
-Un linter OPSEC en ligne de commande qui analyse un texte avant publication et détecte les fuites d'informations personnelles involontaires.
+Scan your text for personal info leaks before you post it online.
 
-L'idée est simple : avant de poster un message sur un forum, un Discord ou n'importe où en ligne, on passe le texte dans opsec-lint et il signale tout ce qui pourrait compromettre l'anonymat de l'auteur.
+opsec-lint is a CLI tool that catches the stuff you forget to remove — IP addresses, API keys, real locations, email addresses, phone numbers, system paths, and more. Run it on a draft message and it tells you exactly what to clean up.
 
-## Détections supportées
+## Example
 
-L'outil scanne un fichier texte (ou un pipe stdin) et détecte :
+Say you're about to post this on a forum:
 
-- **Timezone** — les mentions d'heure qui révèlent ton fuseau horaire
-- **Géolocalisation** — villes, stations de métro, quartiers, codes postaux, pays
-- **Chemins système** — `C:\Users\...`, `/home/...`, `~/.config/...`
-- **Emails** — adresses email
-- **Téléphones** — numéros FR et internationaux
-- **IBAN / CB** — numéros IBAN et cartes bancaires
-- **Clés API** — tokens Stripe, GitHub, AWS, etc.
-- **Fichiers sensibles** — mentions de `id_rsa`, `.env`, `passwd`, etc.
-- **Adresses IP** — IPv4 publiques et privées
+```
+Hey team, it's 3am and I'm still working on this from Paris.
+Shoot me a mail at music.music77@gmail.com if you need the config.
+The server is running on 192.168.1.42, keys are in id_rsa.
+Here's the Stripe key: sk_live_51HG3jKLmnOPqRsTuVwXyZ0123456789
+```
 
-## Installation
+Run `python -m opsec_lint scan message.txt` and get:
+
+```
+  opsec-lint v0.1.0
+
+  ⚠ line 1 : TIMEZONE — "... it's 3am and I'm still working ..."
+  ⚠ line 1 : GEO — "... still working on this from Paris ..."
+  ⚠ line 2 : EMAIL — "... mail at music.music77@gmail.com if you ..."
+  ⚠ line 3 : IP — "... running on 192.168.1.42, keys are ..."
+  ⚠ line 3 : SENSITIVE_FILE — "... keys are in id_rsa ..."
+  🔴 line 4 : API_KEY — "... sk_live_51HG3jKLmnOPqRsTuVwXyZ0123456789 ..."
+
+  ---
+  6 problems found (1 timezone, 1 geo, 1 email, 1 ip, 1 sensitive_file, 1 api_key)
+  Clean up before posting!
+```
+
+## Install
 
 ```bash
-git clone https://github.com/AslakOffi/opsec-lint
+git clone https://github.com/AslakOffi/opsec-lint.git
 cd opsec-lint
 pip install -e .
 ```
 
-## Utilisation
+## Usage
 
 ```bash
-# scanner un fichier
+# scan a file
 python -m opsec_lint scan message.txt
 
-# scanner depuis stdin
-echo "rdv au café place de la bastille à 14h" | python -m opsec_lint scan -
+# scan from stdin
+echo "meet me at Place de la Bastille at 2pm" | python -m opsec_lint scan -
 
-# filtrer par sévérité
+# only show medium severity and above
 python -m opsec_lint scan --level medium message.txt
 ```
 
-Les niveaux de sévérité : `low`, `medium`, `high`, `critical`.
+Severity levels: `low` · `medium` · `high` · `critical`
 
-## Exemple
+## What it detects
 
-```
-$ python -m opsec_lint scan samples/example.txt
-
-  opsec-lint v0.1.0
-
-  [!] ligne 3 : TIMEZONE — mention d'heure détectée
-      "... il est 3h du mat et je suis encore dessus ..."
-
-  [!] ligne 7 : GEO — nom de lieu détecté
-      "... Le RER A à Versailles était en panne ..."
-
-  [!] ligne 12 : PATH — chemin système détecté
-      "... le fichier est dans C:\Users\music\projet\config.yml ..."
-
-  ---
-  4 problèmes trouvés (1 timezone, 1 geo, 1 path, 1 email)
-  Pense à nettoyer avant de poster !
-```
+| Category | Examples |
+|---|---|
+| **Timezone** | "it's 3am", "à 10h du mat", UTC+2 |
+| **Geolocation** | Cities, metro stations, street names, postal codes |
+| **System paths** | `C:\Users\...`, `/home/...`, `~/.config/...` |
+| **Emails** | Any email address |
+| **Phone numbers** | FR mobile (06/07), international (+33, +1, ...) |
+| **IBAN / Credit cards** | IBAN (FR76...), 16-digit card numbers |
+| **API keys / Tokens** | Stripe, GitHub, AWS, GitLab, Slack, JWTs, generic `api_key=...` |
+| **Sensitive files** | `id_rsa`, `.env`, `passwd`, `shadow`, `.git-credentials`, ... |
+| **IP addresses** | Any valid IPv4 (private and public) |
 
 ## Tests
 
 ```bash
-pip install pytest
 pytest
 ```
 
-## Exit codes
+---
 
-- `0` — aucun problème trouvé
-- `1` — erreur (fichier introuvable, etc.)
-- `2` — des fuites OPSEC ont été détectées
+MIT License
+
+Found a bug? [Open an issue.](https://github.com/AslakOffi/opsec-lint/issues)
