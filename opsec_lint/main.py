@@ -7,15 +7,15 @@ from opsec_lint.report import print_results
 def main():
     parser = argparse.ArgumentParser(
         prog='opsec-lint',
-        description='Linter OPSEC — detecte les fuites d\'infos perso avant de poster en ligne',
+        description='OPSEC linter — detect personal info leaks before posting online',
     )
     sub = parser.add_subparsers(dest='command')
 
     # commande scan
-    scan_parser = sub.add_parser('scan', help='scanner un fichier ou stdin')
-    scan_parser.add_argument('file', help='fichier a scanner (ou - pour stdin)')
+    scan_parser = sub.add_parser('scan', help='scan a file or stdin')
+    scan_parser.add_argument('file', help='file to scan (or - for stdin)')
     scan_parser.add_argument('--level', choices=['low', 'medium', 'high', 'critical'],
-                             default='low', help='niveau de severite minimum (default: low)')
+                             default='low', help='minimum severity level (default: low)')
 
     args = parser.parse_args()
 
@@ -33,7 +33,7 @@ def main():
                     text = f.read()
                 filename = args.file
             except FileNotFoundError:
-                print(f"Erreur: fichier '{args.file}' introuvable")
+                print(f"Error: file '{args.file}' not found")
                 sys.exit(1)
             except UnicodeDecodeError:
                 with open(args.file, 'r', encoding='latin-1') as f:
