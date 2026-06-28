@@ -1,3 +1,4 @@
+import json
 from opsec_lint import __version__
 
 # couleurs ANSI
@@ -70,6 +71,27 @@ def print_results(results, filename=None):
     print(f"  {BOLD}{total} problem{'s' if total > 1 else ''} found{RESET} ({detail})")
     print(f"  {YELLOW}Clean up before posting!{RESET}")
     print()
+
+
+def print_json_results(results, filename=None):
+    # sortie json pour integration dans des pipelines / scripts
+    output = {
+        'version': __version__,
+        'file': filename,
+        'total': len(results),
+        'results': [],
+    }
+
+    for r in results:
+        output['results'].append({
+            'line': r['line'],
+            'type': r['type'],
+            'severity': r['severity'],
+            'matches': r['matches'],
+            'context': r['context'],
+        })
+
+    print(json.dumps(output, indent=2, ensure_ascii=False))
 
 
 def get_description(check_type):

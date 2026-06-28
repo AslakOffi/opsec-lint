@@ -1,7 +1,7 @@
 import sys
 import argparse
 from opsec_lint.scanner import scan_text
-from opsec_lint.report import print_results
+from opsec_lint.report import print_results, print_json_results
 
 
 def main():
@@ -16,6 +16,8 @@ def main():
     scan_parser.add_argument('file', help='file to scan (or - for stdin)')
     scan_parser.add_argument('--level', choices=['low', 'medium', 'high', 'critical'],
                              default='low', help='minimum severity level (default: low)')
+    scan_parser.add_argument('--format', choices=['text', 'json'], default='text',
+                             help='output format (default: text)')
 
     args = parser.parse_args()
 
@@ -41,7 +43,11 @@ def main():
                 filename = args.file
 
         results = scan_text(text, min_level=args.level)
-        print_results(results, filename=filename)
+
+        if args.format == 'json':
+            print_json_results(results, filename=filename)
+        else:
+            print_results(results, filename=filename)
 
         # exit code non-zero si des trucs ont ete trouves
         if results:
